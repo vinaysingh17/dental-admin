@@ -9,6 +9,7 @@ const formatDate = (dateString) => {
     // second: "numeric",
   });
 };
-export const BACKEND_URL="http://localhost:8000"
+// export const BACKEND_URL="http://localhost:8000"
+export const BACKEND_URL = "https://dental--backend.herokuapp.com";
 
 export default formatDate;
