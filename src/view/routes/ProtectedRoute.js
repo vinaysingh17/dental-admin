@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getAuth } from "../../application/reducers/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
+
 import {
   actions as uiActions,
   ALERT_TYPES,
@@ -10,6 +12,8 @@ import {
 import { globalSelectors } from "../../application/reducers/globalSlice";
 import PaginationBreadcrumbs from "../component/PaginationBreadcrumbs";
 import LayoutComponent from "../component/Layout";
+import { DENTAL_ADMIN_USER } from "../utils/formatDate";
+import { useState } from "react";
 
 const ProtectedRoute = ({
   guard,
@@ -21,11 +25,23 @@ const ProtectedRoute = ({
 }) => {
   const auth = useSelector(getAuth);
   const location = useLocation();
+  // const userData = localStorage.getItem(DENTAL_ADMIN_USER);
   // const refreshTokenUi = useSelector(getAuthUI.refreshToken);
+  const history = useHistory();
   const dispatch = useDispatch();
   const { selectedSubject, selectedTopic, selectedSubTopic } = useSelector(
     globalSelectors.getGlobals
   );
+  const [loginState, setLoginState] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem(DENTAL_ADMIN_USER);
+    console.log(user, "<<<<this is user");
+    setLoginState(user);
+    if (user == null || user == "null") {
+      // window.location.href = "/login";
+      history.push("/login");
+    }
+  }, []);
 
   // if (refreshTokenUi.loading)
   //   return (
@@ -46,17 +62,19 @@ const ProtectedRoute = ({
   // -----------------------------------------------------
 
   if (guard && !auth.isAuth) {
-    return <Redirect to={"/login"} />;
+    // if (loginState == null) {
+    // return <Redirect to={"/login"} />;
   }
 
   if (role && role !== auth.role) {
+    // if (userData == null) {
     dispatch(
       uiActions.showAlert({
         type: ALERT_TYPES.INFO,
         message: "You cannot access this route.",
       })
     );
-    return <Redirect to={"/login"} />;
+    // return <Redirect to={"/login"} />;
   }
   // ------------------------------------------------------------------------
 

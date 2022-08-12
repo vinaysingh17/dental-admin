@@ -10,6 +10,7 @@ import ConfirmationDialog from "./view/component/ConfirmationDialog";
 import UiAlert from "./view/component/UiAlert";
 import { PersistGate } from "redux-persist/integration/react";
 import "./Styles/inputstyle.css";
+import { DENTAL_ADMIN_USER } from "./view/utils/formatDate";
 
 export default function App() {
   return (

@@ -45,7 +45,6 @@ const createSubject = createAsyncThunk(
   "subject/createSubject",
   async ({ subjectData }, { extra: api, dispatch, getState }) => {
     const data = await api.subject.createSubject(subjectData);
-
     const { limit, currentPage: page } = subjectSelectors.getSubjectPagination(
       getState()
     );
@@ -56,7 +55,6 @@ const createSubject = createAsyncThunk(
     return data.data;
   }
 );
-
 const deleteSubject = createAsyncThunk(
   "subject/deleteSubject",
   async ({ id }, { extra: api, dispatch, getState, rejectWithValue }) => {

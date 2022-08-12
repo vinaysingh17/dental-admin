@@ -14,6 +14,7 @@ import ViewQuestion from "../pages/question/ViewQuestion";
 import AddMCQ from "../pages/question/AddMCQ";
 import User from "../pages/user";
 import UserDetails from "../pages/user/UserDetails";
+import { DENTAL_ADMIN_TOKEN, DENTAL_ADMIN_USER } from "../utils/formatDate";
 
 const routes = [
   {

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuth, logout } from "../../application/reducers/authSlice";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { DENTAL_ADMIN_TOKEN, DENTAL_ADMIN_USER } from "../utils/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -27,13 +28,16 @@ export default function ProfileButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const { name: userName, role, token } = useSelector(getAuth);
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    localStorage.setItem(DENTAL_ADMIN_USER, null);
+    localStorage.setItem(DENTAL_ADMIN_TOKEN, null);
+    history.push("/login");
   };
 
   const open = Boolean(anchorEl);

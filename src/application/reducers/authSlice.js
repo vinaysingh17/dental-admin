@@ -10,9 +10,8 @@ const getAuthUI = {
 const login = createAsyncThunk(
   "auth/login",
   async ({ payload }, { extra: api }) => {
-    alert("in auth slice");
+    console.log(payload, "<<<<payload");
     const { data } = await api.auth.login(payload);
-    
     return data;
   }
 );

@@ -8,6 +8,12 @@ import {
 } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import { Formik } from "formik";
+import {
+  BACKEND_URL,
+  DENTAL_ADMIN_TOKEN,
+  DENTAL_ADMIN_USER,
+} from "../../utils/formatDate";
+
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import * as yup from "yup";
@@ -17,6 +23,8 @@ import {
   login,
 } from "../../../application/reducers/authSlice";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,13 +79,36 @@ export default function Login() {
   const { loading } = useSelector(getAuthUI.login);
   const { isAuth } = useSelector(getAuth);
   const history = useHistory();
+  const [formValue, setFormValue] = useState({ email: "", password: "" });
 
   const handleSubmit = async (values) => {
     // alert("called");
-    const { type } = await dispatch(login({ payload: values }));
+    values.preventDefault();
+    console.log(values);
+
+    const { type } = await dispatch(login({ payload: formValue }));
 
     if (type === "auth/login/fulfilled") {
-      history.push("/");
+      // history.push("/");
+      window.location.href = "/";
+    }
+  };
+  const loginSubmit = async () => {
+    try {
+      console.log(formValue, "<<<<formVAlue");
+      const { data } = await axios.post(`${BACKEND_URL}/api/v1/auth/login`, {
+        email: formValue.email,
+        password: formValue.password,
+      });
+      localStorage.setItem(DENTAL_ADMIN_USER, JSON.stringify(data.data.user));
+      localStorage.setItem(DENTAL_ADMIN_TOKEN, data.data.tokenRes.access_token);
+      console.log("<<<type", data, "<<<daata");
+      if (data.success) {
+        // history.push("/");
+        window.location.href = "/";
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -100,14 +131,14 @@ export default function Login() {
           email: yup.string().required().email().label("Email Id"),
           password: yup.string().required().min(6).label("Password"),
         })}
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
       >
         {({
           values,
           errors,
           touched,
           handleChange,
-          handleBlur,
+          // handleBlur,
           handleSubmit,
         }) => (
           <Paper
@@ -145,11 +176,14 @@ export default function Login() {
                 name={"email"}
                 label="Email Id"
                 placeholder="Enter your email"
-                value={values.email}
-                error={Boolean(touched.email && errors.email)}
-                helperText={touched.email && errors.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                value={formValue.email}
+                // error={Boolean(touched.email && errors.email)}
+                // helperText={touched.email && errors.email}
+                // onChange={handleChange}
+                onChange={(e) =>
+                  setFormValue({ ...formValue, email: e.target.value })
+                }
+                // onBlur={handleBlur}
               />
 
               <TextField
@@ -158,16 +192,19 @@ export default function Login() {
                 name={"password"}
                 label="Password"
                 placeholder="Enter your password"
-                value={values.password}
-                error={Boolean(touched.password && errors.password)}
-                helperText={touched.password && errors.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                value={formValue.password}
+                // error={Boolean(touched.password && errors.password)}
+                // helperText={touched.password && errors.password}
+                // onChange={handleChange}
+                onChange={(e) =>
+                  setFormValue({ ...formValue, password: e.target.value })
+                }
+                // onBlur={handleBlur}
               />
 
               <Button
-                type="submit"
-                onClick={handleSubmit}
+                // type="submit"
+                onClick={loginSubmit}
                 mt="2rem"
                 variant="contained"
                 disabled={loading}
