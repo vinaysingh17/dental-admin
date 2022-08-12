@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { RemoveRedEye as ViewIcon } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 import {
   MoreVert as MoreVertIcon,
@@ -215,7 +216,8 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [Questions, setQuestions] = useState([]);
-
+  const params = useParams();
+  console.log("params", params, "<<<table");
   const questions = useSelector(questionSelectors.getQuestions);
   const { limit, currentPage, totalEntries, emptyRows } = useSelector(
     questionSelectors.getQuestionPagination
@@ -226,7 +228,9 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
 
   useEffect(async () => {
     // dispatch(fetchQuestions({ page: currentPage, limit }));
-    const { data } = await axios.get(`${BACKEND_URL}/api/v1/package-question`);
+    const { data } = await axios.get(`${BACKEND_URL}/api/v1/package-question`, {
+      params: { package: params.package },
+    });
     console.log(data, "<<<<data");
     setQuestions(data.data);
   }, [currentPage, dispatch, limit]);

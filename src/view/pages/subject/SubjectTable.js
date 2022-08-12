@@ -189,7 +189,7 @@ export default function SubjectTable({ addSubject, editSubject }) {
   const [subjectPage, setSubjectPage] = React.useState(1);
   const [subjectLimit, setSubjectLimit] = React.useState(10);
   const [subjectSearch, setSubjectSearch] = React.useState("");
-
+  const [defaultSubjects, setDefaultSubjects] = React.useState([]);
   const subjects = useSelector(subjectSelectors.getSubjects);
 
   const { limit, currentPage, totalEntries, emptyRows } = useSelector(
@@ -217,11 +217,28 @@ export default function SubjectTable({ addSubject, editSubject }) {
 
   const handleSubjectSearch = (e) => {
     setSubjectSearch(e.target.value);
-    throttledSearch(() => {
-      dispatch(
-        fetchSubjects({ page: currentPage, limit, search: e.target.value })
-      );
+    console.log(e.target.value);
+    if (e.target.value == "") {
+      setSubjectList(defaultSubjects);
+      return;
+    }
+    const smallValue = e.target.value.toLowerCase();
+    const filterIt = defaultSubjects.filter((item) => {
+      const smallTitle = item.title.toLowerCase();
+      console.log(smallTitle, smallValue, "<<<<value and title");
+      const matchIt = smallTitle.match(smallValue);
+      console.log(matchIt, "<<match it");
+      if (matchIt != null || matchIt != "null") {
+        return true;
+      } else return false;
     });
+    console.log(filterIt, "<<<<filte rit");
+    setSubjectList(filterIt);
+    // throttledSearch(() => {
+    //   dispatch(
+    //     fetchSubjects({ page: currentPage, limit, search: e.target.value })
+    //   );
+    // });
   };
 
   const selectSubject = (subjectInfo) => {
@@ -230,16 +247,19 @@ export default function SubjectTable({ addSubject, editSubject }) {
 
   useEffect(async () => {
     console.log(params, "<<<params");
+
     const { data } = await axios.get(`${BACKEND_URL}/api/v1/package`);
     setSubjectList(data.data);
+    setDefaultSubjects(data.data);
+
     console.log(data, "<<<<data");
-  }, [subjectLimit, subjectPage, subjectSearch]);
+  }, [subjectLimit, subjectPage]);
 
   return (
     <TableContainer component={Paper}>
       <div className={classes.tableHeader}>
         <Typography className={classes.heading} variant="h3">
-          Subject Details
+          Packages
         </Typography>
         <TextField
           variant="outlined"
@@ -260,7 +280,7 @@ export default function SubjectTable({ addSubject, editSubject }) {
           onClick={addSubject}
           disableRipple
         >
-          Add Subject
+          Add Package
         </Button>
       </div>
       <Table className={classes.table} aria-label="customized table">
@@ -290,7 +310,7 @@ export default function SubjectTable({ addSubject, editSubject }) {
                 <TableCell>
                   <Link
                     component={RouterLink}
-                    to="/topic"
+                    to={`/question/${row.id}`}
                     onClick={() => selectSubject(row)}
                   >
                     {row?.title}

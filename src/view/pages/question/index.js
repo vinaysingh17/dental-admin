@@ -216,6 +216,7 @@ import { makeStyles } from "@material-ui/core";
 import { useState } from "react";
 import QuestionTable from "./QuestionTable";
 import QuestionForm from "./QuestionForm";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -263,7 +264,7 @@ const useStyles = makeStyles(() => ({
 export default function Home() {
   const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
-
+  const params = useParams();
   const [filter, setFilter] = useState({
     subject: null,
     topic: null,
@@ -282,7 +283,6 @@ export default function Home() {
 
     setOpenDrawer((open) => !open);
   };
-
   return (
     <Container className={classes.root}>
       <Paper variant="elevation" className={classes.roundPaper}>

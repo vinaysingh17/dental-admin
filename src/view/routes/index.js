@@ -53,19 +53,19 @@ const routes = [
     showPagination: false,
   },
   {
-    path: "/question",
+    path: "/question/:package",
     component: Questions,
     guard: true,
     layout: true,
     showPagination: true,
   },
-  {
-    path: "/question/:id",
-    component: ViewQuestion,
-    guard: true,
-    layout: true,
-    showPagination: true,
-  },
+  // {
+  //   path: "/question/:id",
+  //   component: ViewQuestion,
+  //   guard: true,
+  //   layout: true,
+  //   showPagination: true,
+  // },
   {
     path: "/add-mcq",
     component: AddMCQ,
@@ -113,20 +113,20 @@ class Routes extends React.Component {
           {routes.map((route) => (
             <ProtectedRoute exact key={route.path} {...route} />
           ))}
-          <Layout>
-            <Route>
-              <Box
-                width="100%"
-                height="100%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <strong style={{ fontSize: "1.1rem" }}>404&nbsp;</strong> Page
-                Not Found.
-              </Box>
-            </Route>
-          </Layout>
+          {/* <Layout> */}
+          <Route>
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <strong style={{ fontSize: "1.1rem" }}>404&nbsp;</strong> Page Not
+              Found.
+            </Box>
+          </Route>
+          {/* </Layout> */}
         </Switch>
       </>
     );

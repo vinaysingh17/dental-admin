@@ -296,7 +296,7 @@ export default function AddMCQ() {
         }) => (
           <div className={classes.form}>
             <div className={classes.formItem}>
-              <GrayTypography>Subject</GrayTypography>
+              <GrayTypography>Packages</GrayTypography>
               {/* <InputDropDown
                 options={Packages}
                 // setSelectedValue={setFormData}

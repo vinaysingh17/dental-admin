@@ -127,6 +127,7 @@ export default function SubjectForm({ closeForm, editSubjectId }) {
       });
       if (data.success) {
         closeForm();
+        window.location.reload(true);
       }
       console.log(data, "<<<<");
     } catch (e) {
@@ -150,7 +151,7 @@ export default function SubjectForm({ closeForm, editSubjectId }) {
         <Box component={"form"} className={classes.root}>
           <div className={classes.formHeader}>
             <Typography color="inherit" variant="h4" align="center" mb="2rem">
-              {Boolean(editSubjectId) ? "Edit Subject" : "Add New Subject"}
+              {Boolean(editSubjectId) ? "Edit Packagesss" : "Add New Package"}
             </Typography>
             <IconButton onClick={closeForm}>
               <CloseIcon />
@@ -161,7 +162,7 @@ export default function SubjectForm({ closeForm, editSubjectId }) {
             <TextField
               variant="outlined"
               id="title"
-              label="Subject Title"
+              label="Package Name"
               name={"title"}
               className={classes.input}
               placeholder="Title"
@@ -182,9 +183,9 @@ export default function SubjectForm({ closeForm, editSubjectId }) {
               {loading ? (
                 <CircularProgress size="1.45rem" thickness={5} />
               ) : Boolean(editSubjectId) ? (
-                "Edit Subject"
+                "Edit Package"
               ) : (
-                "Add Subject"
+                "Add Package"
               )}
             </Button>
           </div>

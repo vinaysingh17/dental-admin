@@ -23,6 +23,7 @@ const ProtectedRoute = ({
   layout,
   ...props
 }) => {
+  console.log(props, "<<<<props");
   const auth = useSelector(getAuth);
   const location = useLocation();
   // const userData = localStorage.getItem(DENTAL_ADMIN_USER);
@@ -116,7 +117,16 @@ const ProtectedRoute = ({
   }
 
   const Layout = layout ? LayoutComponent : React.Fragment;
-
+  if (props.path == "/login") {
+    return (
+      <Route exact {...props}>
+        {/* <Layout> */}
+        {showPagination && <PaginationBreadcrumbs />}
+        <Component />
+        {/* </Layout> */}
+      </Route>
+    );
+  }
   return (
     <Route exact {...props}>
       <Layout>
