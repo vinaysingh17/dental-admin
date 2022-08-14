@@ -1,5 +1,8 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { Person as PersonIcon } from "@mui/icons-material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../utils/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,15 +53,38 @@ const Card = ({ icon: Icon, label, number }) => {
 };
 
 export default function Dashboard() {
+  const [LandingData, setLandingData] = useState({
+    Question: 0,
+    Packages: 0,
+    users: 0,
+  });
+  useEffect(async () => {
+    const { data } = await axios.get(`${BACKEND_URL}/api/v1/landing/all`);
+    console.log(data, "<<<landing");
+    setLandingData(data.data);
+  }, []);
+
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.cardCont}>
-        <Card icon={PersonIcon} label="Number of users registered" number={0} />
-        <Card icon={PersonIcon} label="Question in question bank" number={0} />
-        <Card icon={PersonIcon} label="Number of quiz available" number={0} />
-        <Card icon={PersonIcon} label="Active Users" number={0} />
+        <Card
+          icon={PersonIcon}
+          label="Number of users registered"
+          number={LandingData.users}
+        />
+        <Card
+          icon={PersonIcon}
+          label="Question in question bank"
+          number={LandingData.Question}
+        />
+        <Card
+          icon={PersonIcon}
+          label="Number of Packages available"
+          number={LandingData.Packages}
+        />
+        {/* <Card icon={PersonIcon} label="Active Users" number={0} /> */}
       </div>
     </div>
   );
