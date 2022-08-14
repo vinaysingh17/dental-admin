@@ -26,6 +26,11 @@ import {
   Typography,
   Link,
 } from "@material-ui/core";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import {
   MoreVert as MoreVertIcon,
@@ -190,8 +195,12 @@ export default function SubjectTable({ addSubject, editSubject }) {
   const [subjectLimit, setSubjectLimit] = React.useState(10);
   const [subjectSearch, setSubjectSearch] = React.useState("");
   const [defaultSubjects, setDefaultSubjects] = React.useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState({
+    open: false,
+    row: null,
+  });
   const subjects = useSelector(subjectSelectors.getSubjects);
-
+  const [refreshData, setRefreshData] = React.useState(false);
   const { limit, currentPage, totalEntries, emptyRows } = useSelector(
     subjectSelectors.getSubjectPagination
   );
@@ -253,7 +262,17 @@ export default function SubjectTable({ addSubject, editSubject }) {
     setDefaultSubjects(data.data);
 
     console.log(data, "<<<<data");
-  }, [subjectLimit, subjectPage]);
+  }, [subjectLimit, subjectPage, refreshData]);
+
+  const deletePackage = async (row) => {
+    const { data } = await axios.delete(
+      `${BACKEND_URL}/api/v1/package/${openDeleteModal.row.id}`
+    );
+    if (data.success) {
+      setRefreshData(!refreshData);
+      setOpenDeleteModal({ open: false });
+    }
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -318,6 +337,18 @@ export default function SubjectTable({ addSubject, editSubject }) {
                 </TableCell>
                 <TableCell>{formatDate(row?.updatedAt)}</TableCell>
                 <TableCell>{formatDate(row?.createdAt)}</TableCell>
+                <TableCell
+                  style={{ color: "red", cursor: "pointer" }}
+                  onClick={() =>
+                    setOpenDeleteModal({
+                      ...openDeleteModal,
+                      open: true,
+                      row: row,
+                    })
+                  }
+                >
+                  Delete
+                </TableCell>
                 {/* <TableCell>
                   {
                     <ActionPopover
@@ -357,6 +388,31 @@ export default function SubjectTable({ addSubject, editSubject }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Box>
+      <Dialog
+        open={openDeleteModal.open}
+        onClose={() => setOpenDeleteModal({ ...openDeleteModal, open: false })}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenDeleteModal({ ...openDeleteModal, open: false });
+            }}
+          >
+            Disagree
+          </Button>
+          <Button onClick={deletePackage} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </TableContainer>
   );
 }
