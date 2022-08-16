@@ -265,7 +265,7 @@ export default function AddMCQ() {
       );
       console.log(data, "<<<<data");
       if (data.success) {
-        history.push("/question");
+        history.push(`/question/${bodyData.package}`);
       }
     }
   };
