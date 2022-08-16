@@ -104,7 +104,7 @@ const DrawerButton = ({ text, icon: Icon, child, to }) => {
 
 const links = [
   {
-    to: "https://dental-admin.bobprep.com/",
+    to: "/",
     name: "Dashboard",
     icon: Dashboard,
   },
