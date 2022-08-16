@@ -190,28 +190,6 @@ const useQuestionStyles = makeStyles({
   },
 });
 
-const Question = ({ data }) => {
-  const classes = useQuestionStyles();
-  const history = useHistory();
-
-  console.log(data);
-  return (
-    <div className={classes.root}>
-      <div className={classes.headerDiv}>
-        <Typography variant="h5">Question</Typography>
-        <Box flex="1" />
-        {/* <IconButton onClick={() => history.push(`/question/${data.id}`)}>
-          <ViewIcon />
-        </IconButton> */}
-      </div>
-      <Box
-        mt="1rem"
-        dangerouslySetInnerHTML={{ __html: data.questionTitle }}
-      ></Box>
-    </div>
-  );
-};
-
 export default function QuestionTable({ filter, openFilterDrawer }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -257,6 +235,54 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
         })
       );
     });
+  };
+
+  const deleteThisQue = async (value) => {
+    const { data } = await axios.delete(
+      `${BACKEND_URL}/api/v1/package-question/delete/${value.id}`
+    );
+    console.log(data, "<<<<data");
+  };
+
+  const Question = ({ data }) => {
+    const classes = useQuestionStyles();
+    const history = useHistory();
+
+    console.log(data);
+    return (
+      <div className={classes.root}>
+        <div className={classes.headerDiv}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <div>
+              <Typography variant="h5">Question</Typography>
+            </div>
+            <div>
+              <Typography
+                variant="h5"
+                style={{ color: "red" }}
+                onClick={() => deleteThisQue(data)}
+              >
+                Delete
+              </Typography>
+            </div>
+          </div>
+          <Box flex="1" />
+          {/* <IconButton onClick={() => history.push(`/question/${data.id}`)}>
+            <ViewIcon />
+          </IconButton> */}
+        </div>
+        <Box
+          mt="1rem"
+          dangerouslySetInnerHTML={{ __html: data.questionTitle }}
+        ></Box>
+      </div>
+    );
   };
 
   return (
