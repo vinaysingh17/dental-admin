@@ -22,7 +22,7 @@ import {
   CircularProgress,
   Typography,
 } from "@material-ui/core";
-import { RemoveRedEye as ViewIcon } from "@mui/icons-material";
+import { Refresh, RemoveRedEye as ViewIcon } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 
 import {
@@ -195,6 +195,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
   const dispatch = useDispatch();
   const [Questions, setQuestions] = useState([]);
   const params = useParams();
+  const [refresPage, setRefresPage] = useState(false);
   console.log("params", params, "<<<table");
   const questions = useSelector(questionSelectors.getQuestions);
   const { limit, currentPage, totalEntries, emptyRows } = useSelector(
@@ -211,7 +212,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
     });
     console.log(data, "<<<<data");
     setQuestions(data.data);
-  }, [currentPage, dispatch, limit]);
+  }, [currentPage, dispatch, limit, refresPage]);
 
   const handleChangePage = (_, newPage) => {
     dispatch(questionActions.changePage({ page: newPage + 1 }));
@@ -241,6 +242,9 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
     const { data } = await axios.delete(
       `${BACKEND_URL}/api/v1/package-question/delete/${value.id}`
     );
+    if (data.statusCode == "200") {
+      setRefresPage(!refresPage);
+    }
     console.log(data, "<<<<data");
   };
 
@@ -265,7 +269,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
             <div>
               <Typography
                 variant="h5"
-                style={{ color: "red" }}
+                style={{ color: "red", cursor: "pointer" }}
                 onClick={() => deleteThisQue(data)}
               >
                 Delete
