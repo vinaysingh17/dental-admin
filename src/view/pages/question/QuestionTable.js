@@ -293,7 +293,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
     <Paper className={classes.root}>
       <div className={classes.tableHeader}>
         <Typography className={classes.heading} variant="h3">
-          Question Bank
+          {/* Question Bank */}
         </Typography>
 
         {/* <Button
