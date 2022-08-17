@@ -110,8 +110,8 @@ const useStyles = makeStyles({
 const headings = [
   { id: "profile", label: "" },
   { id: "title", label: "Title" },
-  { id: "createdAt", label: "Created At" },
   { id: "updatedAt", label: "Updated At" },
+  { id: "createdAt", label: "Created At" },
   { id: "actions", label: "" },
 ];
 
