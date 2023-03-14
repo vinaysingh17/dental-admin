@@ -103,6 +103,7 @@ export default function DraftEditor({
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
   const [convertedContent, setConvertedContent] = useState("<h1>ok</h1>");
   const handleEditorChange = (state) => {
     console.log(state, ">>this is state");
@@ -116,6 +117,7 @@ export default function DraftEditor({
     else handleFormData(index, currentContentAsHTML);
     setConvertedContent(currentContentAsHTML);
   };
+  
   const convertContentToHTML = () => {
     // {draftToHtml(convertToRaw(editorState.getCurrentContent()))}
     let currentContentAsHTML = draftToHtml(

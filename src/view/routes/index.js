@@ -12,6 +12,7 @@ import Dashboard from "../pages/Dashboard";
 import Questions from "../pages/question";
 import ViewQuestion from "../pages/question/ViewQuestion";
 import AddMCQ from "../pages/question/AddMCQ";
+import EditMcq from "../pages/question/EditMCQ";
 import User from "../pages/user";
 import UserDetails from "../pages/user/UserDetails";
 import { DENTAL_ADMIN_TOKEN, DENTAL_ADMIN_USER } from "../utils/formatDate";
@@ -70,6 +71,13 @@ const routes = [
   {
     path: "/add-mcq",
     component: AddMCQ,
+    guard: true,
+    layout: true,
+    showPagination: true,
+  },
+  {
+    path: "/edit-mcq/:id",
+    component: EditMcq,
     guard: true,
     layout: true,
     showPagination: true,

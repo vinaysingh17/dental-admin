@@ -249,6 +249,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
   };
 
   const Question = ({ data }) => {
+    console.log(data, "<<<<question data");
     const classes = useQuestionStyles();
     const history = useHistory();
 
@@ -267,6 +268,13 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
               <Typography variant="h5">Question</Typography>
             </div>
             <div>
+              <Typography
+                variant="h5"
+                style={{ color: "red", cursor: "pointer" }}
+                onClick={() => history.push(`/edit-mcq/${data.id}`)}
+              >
+                Edit
+              </Typography>
               <Typography
                 variant="h5"
                 style={{ color: "red", cursor: "pointer" }}
@@ -293,7 +301,7 @@ export default function QuestionTable({ filter, openFilterDrawer }) {
     <Paper className={classes.root}>
       <div className={classes.tableHeader}>
         <Typography className={classes.heading} variant="h3">
-          {/* Question Bank */}
+          Question Bank
         </Typography>
 
         {/* <Button

@@ -105,7 +105,7 @@ export default function Navbar() {
         >
           <MenuItem onClick={handleClose} disableRipple>
             <Logout />
-            Edit
+            Log out
           </MenuItem>
         </Menu>
       </Toolbar>
